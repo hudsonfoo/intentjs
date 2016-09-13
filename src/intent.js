@@ -4,6 +4,7 @@
   /**
    * Accepts an active element like a menu item, and an element
    * that we're tracking intent for.
+   * @constructor
    * @param {node} activeEl original element that was activated
    * @param {node} trackingEl element that we track intent for
    * @param {object} options
