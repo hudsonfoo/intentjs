@@ -1,0 +1,39 @@
+{
+  "name": "intent.js",
+  "version": "0.0.1",
+  "description": "Provides a promise for user intent based on mouse movement and other gestures. Useful for advanced navigation systems.",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0"
+  },
+  "scripts": {
+    "build": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hudsonfoo/intentjs.git"
+  },
+  "keywords": [
+    "intent",
+    "gestures",
+    "navigation",
+    "menu"
+  ],
+  "author": "David Hudson <im@davidhudson.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hudsonfoo/intentjs/issues"
+  },
+  "homepage": "https://github.com/hudsonfoo/intentjs#readme"
+}

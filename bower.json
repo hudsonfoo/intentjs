@@ -1,0 +1,23 @@
+{
+  "name": "Intent.js",
+  "authors": [
+    "David Hudson <im@davidhudson.me>"
+  ],
+  "description": "Provides a promise for user intent based on mouse movement and other gestures. Useful for advanced navigation systems.",
+  "main": "dist/intent.min.js",
+  "keywords": [
+    "intent",
+    "gestures",
+    "navigation",
+    "menu"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hudsonfoo/intentjs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
