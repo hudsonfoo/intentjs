@@ -37,7 +37,7 @@
    */
   Intent.prototype.watch = function() {
     this.timeout = setTimeout(this.cancel, this.options.timeout);
-    self.boundListener = self.listen.bind(this);
+    self.boundListener = this.listen.bind(this);
     document.addEventListener("mousemove", this.boundListener);
 
     return this.promise();
@@ -51,21 +51,13 @@
    * @returns {object} new instance of Intent
    */
   Intent.prototype.setVerticies = function(activeEl, trackingEl) {
-    var self = this;
+    var trackingElBounds = trackingEl.getBoundingClientRect();
 
     activeEl = activeEl || this.activeEl;
     trackingEl = trackingEl || this.trackingEl;
 
-    // A is the exact position of the mouse within the activeEl
-    var activeElBounds = activeEl.getBoundingClientRect();
-    var trackingElBounds = trackingEl.getBoundingClientRect();
-
-    this.verticies.p0 = { x: self.mouseP.x, y: self.mouseP.y };
-
-    // B is the coordinates of either the top right or top left corner of the trackingEl (whichever is closest)
+    this.verticies.p0 = { x: this.mouseP.x, y: this.mouseP.y };
     this.verticies.p1 = { x: trackingElBounds.left, y: trackingElBounds.top };
-
-    // C is the coordinates of either the bottom right or bottom left corner of the trackingEl (whichever is closest)
     this.verticies.p2 = { x: trackingElBounds.left, y: trackingElBounds.bottom };
   };
 
