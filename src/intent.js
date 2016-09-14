@@ -25,7 +25,7 @@
     this.timeout = null;
 
     // Merge passed options with default options
-    this.options.timeout = this.options.timeout || 2000;
+    this.options.timeout = this.options.timeout || 750;
 
     return this;
   };
@@ -36,8 +36,8 @@
    * @returns {promise} on intent cancellation
    */
   Intent.prototype.watch = function() {
-    this.timeout = setTimeout(this.cancel, this.options.timeout);
-    self.boundListener = this.listen.bind(this);
+    this.timeout = setTimeout(this.cancel.bind(this), this.options.timeout);
+    this.boundListener = this.listen.bind(this);
     document.addEventListener("mousemove", this.boundListener);
 
     return this.promise();
@@ -51,10 +51,12 @@
    * @returns {object} new instance of Intent
    */
   Intent.prototype.setVerticies = function(activeEl, trackingEl) {
-    var trackingElBounds = trackingEl.getBoundingClientRect();
+    var trackingElBounds;
 
     activeEl = activeEl || this.activeEl;
     trackingEl = trackingEl || this.trackingEl;
+
+    trackingElBounds = trackingEl.getBoundingClientRect();
 
     this.verticies.p0 = { x: this.mouseP.x, y: this.mouseP.y };
     this.verticies.p1 = { x: trackingElBounds.left, y: trackingElBounds.top };
@@ -65,21 +67,18 @@
    * Manages actions based on mouse movements
    */
   Intent.prototype.listen = function(e) {
-    var self = this;
-
     // Update saved mouse position
-    self.mouseP.x = e.pageX;
-    self.mouseP.y = e.pageY;
+    this.mouseP.x = e.pageX;
+    this.mouseP.y = e.pageY;
 
-    if (!self.verticiesSet()) {
-      self.setVerticies();
+    if (!this.verticiesSet()) {
+      this.setVerticies();
     }
 
-    if (self.isActive()) {
-      // If user is not within intent triangle, resolve promise
-      if (!self.isInBounds(self.mouseP, self.verticies)) {
-        self.resolvePromises();
-        self.cancel();
+    if (this.isActive()) {
+      // If user is not within intent triangle, cancel
+      if (!this.isInBounds(this.mouseP, this.verticies)) {
+        this.cancel();
       }
     }
   };
@@ -98,8 +97,8 @@
    */
   Intent.prototype.verticiesSet = function() {
     return typeof this.verticies.p0 === "object"
-    && typeof this.verticies.p1 === "object"
-    && typeof this.verticies.p2 === "object";
+      && typeof this.verticies.p1 === "object"
+      && typeof this.verticies.p2 === "object";
   };
 
   /**
@@ -156,6 +155,7 @@
    */
   Intent.prototype.cancel = function() {
     document.removeEventListener("mousemove", this.boundListener);
+    this.resolvePromises();
     clearTimeout(this.timeout);
     this.queue = [];
   };

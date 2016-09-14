@@ -1,0 +1,84 @@
+<html>
+<head>
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    ul {
+      position: absolute;
+      width: 20%;
+      left: 0;
+      top: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      position: relative;
+      margin: 0;
+      display: block;
+      height: 20px;
+      padding: 5px;
+      text-align: center;
+      background-color: #2a6496;
+      color: #ffffff;
+      border-bottom: 1px solid #269abc;
+    }
+
+    .content-area {
+      position: absolute;
+      top: 0;
+      left: 20%;
+      width: 80%;
+      height:90%;
+      background-color:#f9f2f4;
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+  <ul>
+    <li href="#content-area-1">Menu Item 1</li>
+    <li href="#content-area-2">Menu Item 2</li>
+    <li href="#content-area-3">Menu Item 3</li>
+    <li href="#content-area-4">Menu Item 4</li>
+  </ul>
+
+  <div id="content-area-1" class="content-area">Content Area 1</div>
+  <div id="content-area-2" class="content-area">Content Area 2</div>
+  <div id="content-area-3" class="content-area">Content Area 3</div>
+  <div id="content-area-4" class="content-area">Content Area 4</div>
+
+  <script src="../src/intent.js"></script>
+  <script>
+    var menuItems = document.getElementsByTagName("li"),
+      contentAreas = document.getElementsByClassName("content-area"),
+      waitForIntent = false;
+
+    for (var i in menuItems) {
+      if (typeof menuItems[i] !== "object") { continue; }
+      menuItems[i].addEventListener("mousemove", function() {
+        var menuItem = this,
+          contentId = menuItem.getAttribute("href").replace("#",""),
+          contentArea = document.getElementById(contentId);
+
+        if (!waitForIntent) {
+          waitForIntent = true;
+
+          Intent(menuItem, contentArea).watch().then(function() {
+            waitForIntent = false;
+          });
+
+          for (var i in contentAreas) {
+            if (typeof contentAreas[i] !== "object") { continue; }
+            contentAreas[i].style.visibility = "hidden";
+          }
+
+          document.getElementById(contentId).style.visibility = "visible";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
