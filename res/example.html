@@ -35,6 +35,13 @@
       background-color:#f9f2f4;
       visibility: hidden;
     }
+
+    .content-area h1 {
+      font-size: 76px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 30%;
+    }
   </style>
 </head>
 <body>
@@ -45,10 +52,10 @@
     <li href="#content-area-4">Menu Item 4</li>
   </ul>
 
-  <div id="content-area-1" class="content-area">Content Area 1</div>
-  <div id="content-area-2" class="content-area">Content Area 2</div>
-  <div id="content-area-3" class="content-area">Content Area 3</div>
-  <div id="content-area-4" class="content-area">Content Area 4</div>
+  <div id="content-area-1" class="content-area"><h1>Content Area 1</h1></div>
+  <div id="content-area-2" class="content-area"><h1>Content Area 2</h1></div>
+  <div id="content-area-3" class="content-area"><h1>Content Area 3</h1></div>
+  <div id="content-area-4" class="content-area"><h1>Content Area 4</h1></div>
 
   <script src="../src/intent.js"></script>
   <script>
@@ -66,7 +73,7 @@
         if (!waitForIntent) {
           waitForIntent = true;
 
-          Intent(menuItem, contentArea).watch().then(function() {
+          Intent(menuItem, contentArea, { debug: true }).watch().then(function() {
             waitForIntent = false;
           });
 

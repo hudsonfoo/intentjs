@@ -25,7 +25,8 @@
     this.timeout = null;
 
     // Merge passed options with default options
-    this.options.timeout = this.options.timeout || 750;
+    this.options.timeout = this.options.timeout || 1000;
+    this.options.debug = this.options.debug || false;
 
     return this;
   };
@@ -75,6 +76,7 @@
       this.setVerticies();
     }
 
+    if (this.options.debug) { this.debug(); }
     if (this.isActive()) {
       // If user is not within intent triangle, cancel
       if (!this.isInBounds(this.mouseP, this.verticies)) {
@@ -158,6 +160,55 @@
     this.resolvePromises();
     clearTimeout(this.timeout);
     this.queue = [];
+    if (this.options.debug) {
+      this.boundingBox.style.visibility = "hidden";
+      this.testPoint1.style.visibility = "hidden";
+      this.testPoint2.style.visibility = "hidden";
+      this.testPoint3.style.visibility = "hidden";
+      this.testPoint4.style.visibility = "hidden";
+      return;
+    }
+  };
+
+  Intent.prototype.debug = function() {
+    var mouseP = this.mouseP;
+
+    this.boundingBox = this.boundingBox || createTestBoundingBoxEl();
+    this.testPoint1 = this.testPoint1 || createTestPointEl();
+    this.testPoint2 = this.testPoint2 || createTestPointEl();
+    this.testPoint3 = this.testPoint3 || createTestPointEl();
+    this.testPoint4 = this.testPoint4 || createTestPointEl();
+
+    updatePointStyle(this.testPoint1, mouseP, "red");
+    updatePointStyle(this.testPoint2, this.verticies.p0, "blue");
+    updatePointStyle(this.testPoint3, this.verticies.p1, "green");
+    updatePointStyle(this.testPoint4, this.verticies.p2, "purple");
+
+    this.boundingBox.style.visibility = "visible";
+    this.boundingBox.style.left = this.verticies.p0.x;
+    this.boundingBox.style.top = this.verticies.p1.y;
+    this.boundingBox.style.borderWidth = this.verticies.p0.y + "px " + (this.verticies.p1.x - this.verticies.p0.x) + "px " + (this.verticies.p2.y - this.verticies.p0.y) + "px 0";
+
+    function updatePointStyle(el, p, color) {
+      el.style.visibility = "visible";
+      el.style.left = p.x;
+      el.style.top = p.y;
+      el.style.backgroundColor = color;
+    }
+
+    function createTestBoundingBoxEl() {
+      var div = document.createElement("div");
+      div.style = "position: absolute; opacity: 0.7; width: 0; height: 0; border-style: solid; border-color: transparent #007bff transparent transparent;";
+      document.body.appendChild(div);
+      return div;
+    }
+
+    function createTestPointEl() {
+      var div = document.createElement("div");
+      div.style = "position: absolute; width: 13px; height: 13px; border-radius: 50%; z-index:99999;";
+      document.body.appendChild(div);
+      return div;
+    }
   };
 
   /**
