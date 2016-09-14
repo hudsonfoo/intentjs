@@ -77,7 +77,6 @@
   Intent.prototype.setVerticies = function(activeEl, trackingEl) {
     var trackingElBounds;
 
-    activeEl = activeEl || this.activeEl;
     trackingEl = trackingEl || this.trackingEl;
 
     trackingElBounds = trackingEl.getBoundingClientRect();
@@ -137,25 +136,29 @@
 
   /**
    * Checks to see if a given coordinate is within the intent triangle
+   *
+   * credit: http://www.blackpawn.com/texts/pointinpoly/default.html
    * @param {object} p coordinate that will be tested
    * @param {object} verticies coordinates of intent triangle
    * @returns {boolean}
    */
   Intent.prototype.isInBounds = function(p, verticies) {
-    var v0 = [verticies.p2.x - verticies.p0.x, verticies.p2.y - verticies.p0.y];
-    var v1 = [verticies.p1.x - verticies.p0.x, verticies.p1.y - verticies.p0.y];
-    var v2 = [p.x - verticies.p0.x, p.y - verticies.p0.y];
+    var v0, v1, v2, dot00, dot01, dot02, dot11, dot12, invDenom, u, v;
 
-    var dot00 = (v0[0]*v0[0]) + (v0[1]*v0[1]);
-    var dot01 = (v0[0]*v1[0]) + (v0[1]*v1[1]);
-    var dot02 = (v0[0]*v2[0]) + (v0[1]*v2[1]);
-    var dot11 = (v1[0]*v1[0]) + (v1[1]*v1[1]);
-    var dot12 = (v1[0]*v2[0]) + (v1[1]*v2[1]);
+    v0 = [verticies.p2.x - verticies.p0.x, verticies.p2.y - verticies.p0.y];
+    v1 = [verticies.p1.x - verticies.p0.x, verticies.p1.y - verticies.p0.y];
+    v2 = [p.x - verticies.p0.x, p.y - verticies.p0.y];
 
-    var invDenom = 1/ (dot00 * dot11 - dot01 * dot01);
+    dot00 = (v0[0] * v0[0]) + (v0[1] * v0[1]);
+    dot01 = (v0[0] * v1[0]) + (v0[1] * v1[1]);
+    dot02 = (v0[0] * v2[0]) + (v0[1] * v2[1]);
+    dot11 = (v1[0] * v1[0]) + (v1[1] * v1[1]);
+    dot12 = (v1[0] * v2[0]) + (v1[1] * v2[1]);
 
-    var u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-    var v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+    invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+
+    u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+    v = (dot00 * dot12 - dot01 * dot02) * invDenom;
 
     return ((u >= 0) && (v >= 0) && (u + v < 1));
   };
@@ -194,41 +197,15 @@
   };
 
   Intent.prototype.debug = function() {
-    var mouseP = this.mouseP;
-
     this.boundingBox = this.boundingBox || createTestBoundingBoxEl();
-    this.testPoint1 = this.testPoint1 || createTestPointEl();
-    this.testPoint2 = this.testPoint2 || createTestPointEl();
-    this.testPoint3 = this.testPoint3 || createTestPointEl();
-    this.testPoint4 = this.testPoint4 || createTestPointEl();
-
-    updatePointStyle(this.testPoint1, mouseP, "red");
-    updatePointStyle(this.testPoint2, this.verticies.p0, "blue");
-    updatePointStyle(this.testPoint3, this.verticies.p1, "green");
-    updatePointStyle(this.testPoint4, this.verticies.p2, "purple");
-
     this.boundingBox.style.visibility = "visible";
     this.boundingBox.style.left = this.verticies.p0.x;
     this.boundingBox.style.top = this.verticies.p1.y;
     this.boundingBox.style.borderWidth = this.verticies.p0.y + "px " + (this.verticies.p1.x - this.verticies.p0.x) + "px " + (this.verticies.p2.y - this.verticies.p0.y) + "px 0";
 
-    function updatePointStyle(el, p, color) {
-      el.style.visibility = "visible";
-      el.style.left = p.x;
-      el.style.top = p.y;
-      el.style.backgroundColor = color;
-    }
-
     function createTestBoundingBoxEl() {
       var div = document.createElement("div");
       div.style = "position: absolute; opacity: 0.7; width: 0; height: 0; border-style: solid; border-color: transparent #007bff transparent transparent;";
-      document.body.appendChild(div);
-      return div;
-    }
-
-    function createTestPointEl() {
-      var div = document.createElement("div");
-      div.style = "position: absolute; width: 13px; height: 13px; border-radius: 50%; z-index:99999;";
       document.body.appendChild(div);
       return div;
     }
