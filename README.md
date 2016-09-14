@@ -8,9 +8,9 @@ The following shows the system in debug mode where the bounding area is visualiz
 
 ## Getting Started
 
-First, download via bower: `bower install intentjs`
+First, download via bower: `bower install intent`
 
-This script is AMD aware so you're welcome to `var Intent = require('intentjs');`. Without require, Intent will be globally accessible.
+This script is AMD aware so you're welcome to `var Intent = require('intent');`. Without require, Intent will be globally accessible.
 
 Wherever you need to determine user intent based on mouse movements in your code, call Intent like so:
 
