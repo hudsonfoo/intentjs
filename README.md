@@ -13,16 +13,14 @@ This script is AMD aware so you're welcome to `var Intent = require('intentjs');
 Wherever you need to determine user intent based on mouse movements in your code, call Intent like so:
 
 ```javascript
-var intent = Intent(element1, element2);
-
-intent.watch().then(function () {
+Intent(element1, element2).watch().then(function () {
   // WHATEVER YOU NEED TO DO IF USER HAS NO INTENT
 });
 ```
 
 `element1` is the originating element (like a menu item), and `element2` is the element that the user may or may not intend to hover over.
 
-That's all there is to it.
+That's all there is to it. See [this example](res/example.html) for a more fleshed out example.
 
 ## Contributing
 
