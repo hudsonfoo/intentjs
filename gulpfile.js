@@ -10,7 +10,9 @@ gulp.task('clean', function(callback){
 
 gulp.task('scripts', ['clean'], function(){
   return gulp.src('./src/intent.js')
-    .pipe(uglify())
+    .pipe(uglify({
+      preserveComments: "license"
+    }))
     .pipe(rename("intent.min.js"))
     .pipe(gulp.dest('./dist'));
 });
