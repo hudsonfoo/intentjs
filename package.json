@@ -1,6 +1,6 @@
 {
-  "name": "intent",
-  "version": "0.0.1",
+  "name": "intentjs",
+  "version": "0.0.8",
   "description": "Provides a promise for user intent based on mouse movement and other gestures. Useful for advanced navigation systems.",
   "main": "gulpfile.js",
   "directories": {
